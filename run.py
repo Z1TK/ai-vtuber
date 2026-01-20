@@ -1,4 +1,4 @@
-from src.service.tts import AudioStreamTTS
+from src.tts import AudioStreamTTS
 
 
 def run():
