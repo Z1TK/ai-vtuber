@@ -21,6 +21,7 @@ def main():
         rate_size=16000,
         chunk_size=1024,
         language="ru",
+        username="PEZDABOLIUS"
     )
 
 if __name__ == "__main__":

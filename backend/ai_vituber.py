@@ -15,6 +15,7 @@ def ai_assistant(
     rate_size: int,
     chunk_size: int,
     language: str,
+    username: str,
 ) -> None:
     stt.start(rate_size, chunk_size)
     tts.start(chunk_size)
@@ -22,7 +23,11 @@ def ai_assistant(
     try:
         while True:
             text = listen_commands(
-                stt_engine=stt, rate=rate_size, chunk=chunk_size, lang=language
+                stt_engine=stt,
+                rate=rate_size,
+                chunk=chunk_size,
+                lang=language,
+                username=username,
             )
             command = text.strip(" .,!?\n").lower()
 
@@ -41,8 +46,15 @@ def ai_assistant(
                 llm_engine=llm, content=text, system_content="character.txt"
             )
 
-            print(f'Friend: {thoughts}')
-            speak_assistant(tts_engine=tts, audio=thoughts, lang=language)
+            print(f"Friend: {thoughts}")
+            speak_assistant(
+                tts_engine=tts,
+                audio=thoughts,
+                lang=language,
+                wav=[
+                    "samples/sample.wav",
+                ],
+            )
     finally:
         tts.close()
         stt.close()

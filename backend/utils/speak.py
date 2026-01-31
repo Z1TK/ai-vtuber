@@ -7,7 +7,7 @@ from backend.service.tts import AudioStreamTTS
 
 
 def listen_commands(
-    stt_engine: AudioStreamSTT, rate: int, chunk: int, lang: str
+    stt_engine: AudioStreamSTT, rate: int, chunk: int, lang: str, username: str
 ) -> str:
     print("Press and hold ALT to start talking")
     keyboard.wait("alt")
@@ -28,21 +28,20 @@ def listen_commands(
     except Exception as e:
         print(f"TTS error: {e}")
 
-    print(f"User: {audio}")
+    print(f"{username}: {audio}")
     return audio
 
 
-def speak_assistant(tts_engine: AudioStreamTTS, audio: str, lang: str) -> None:
+def speak_assistant(
+    tts_engine: AudioStreamTTS, audio: str, lang: str, wav: list[str]
+) -> None:
     try:
         reply_array = tts_engine.synthesizing(
             text=audio,
             lang=lang,
             temperature=0.7,
             speed=1.0,
-            wav=[
-                "backend/samples/sample_1.wav",
-                "backend/samples/sample_2.wav",
-            ],
+            wav=wav,
         )
         reply = tts_engine.array_to_bytes(reply_array)
         tts_engine.voice(reply)
